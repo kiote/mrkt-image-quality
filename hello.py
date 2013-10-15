@@ -52,5 +52,5 @@ def save_request(form):
   c = conn.cursor()
   for i in form:
     offer_id = re.findall(r'\d+', i)[0]
-    grade = form["input[%s]" % offer_id]
+    grade = form["offer_id[%s]" % offer_id]
     c.execute("INSERT into offers_grade values (?,?)", (offer_id, grade))

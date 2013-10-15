@@ -1,7 +1,14 @@
 <!doctype html>
 <title>Hello from Flask</title>
-{% if name %}
-  <h1>Hello {{ name }}!</h1>
-{% else %}
-  <h1>Hello World!</h1>
-{% endif %}
+<form name="offers" action="/save" method="POST">
+  {% for value in [1,2,3]%}
+    {% if name %}
+    <h1>OfferID</h1>
+    <input type="text" name="input[{{ value }}]"></input>
+    {% else %}
+      <h1>Hello World!</h1>
+    {% endif %}
+  {% endfor %}
+  <br/>
+  <input type="submit" value="save"></input>
+</form>

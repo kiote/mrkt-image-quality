@@ -32,10 +32,6 @@ def init_database():
     db.commit()
 # >> database 
 
-@app.route('/main')
-def main():
-  return render_template('main.html')
-
 @app.route('/save', methods=['POST'])
 def save():
   if request.method == 'POST':

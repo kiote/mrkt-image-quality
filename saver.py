@@ -12,8 +12,8 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 # << database
-DATABASE = __file__ + 'database.db'
-SCHEMA = __file__ + 'schema.sql'
+DATABASE = os.getcwd() + '/database.db'
+SCHEMA = os.getcwd() + '/schema.sql'
 
 def get_db():
   db = sqlite3.connect(DATABASE)

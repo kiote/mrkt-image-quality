@@ -46,7 +46,11 @@ def init_db():
 
 @app.route('/show')
 def show():
-  return render_template('show.html')
+  conn = sqlite3.connect(DATABASE)
+  c = conn.cursor()
+  rows = c.execute("SELECT * FROM offers_grade")
+  app.logger.debug(rows.fetchone())
+  return render_template('show.html', rows=rows)
 
 def save_request(form):
   conn = sqlite3.connect(DATABASE)
@@ -57,6 +61,8 @@ def save_request(form):
     offer_id = match[0]
     grade = form["offer_id[%s]" % offer_id]
     c.execute("INSERT into offers_grade values (?,?,?)", (offer_id, grade, int(time.time())))
+  conn.commit()
+  conn.close()
 
 if __name__ == '__main__':
     app.run()

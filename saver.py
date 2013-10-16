@@ -47,18 +47,19 @@ def show():
   conn = sqlite3.connect(DATABASE)
   c = conn.cursor()
   rows = c.execute("SELECT * FROM offers_grade")
-  app.logger.debug(rows.fetchone())
   return render_template('show.html', rows=rows)
 
 def save_request(form):
   conn = sqlite3.connect(DATABASE)
   c = conn.cursor()
+  check_id = form["checkId"]
   for i in form:
     match = re.findall(r'offer_id\[(\d+)\]', i)
     if not match: continue
     offer_id = match[0]
     grade = form["offer_id[%s]" % offer_id]
-    c.execute("INSERT into offers_grade values (?,?,?)", (offer_id, grade, int(time.time())))
+    c.execute("INSERT into offers_grade values (?,?,?,?,?)", \
+      (offer_id, grade, check_id, request.headers.get('User-Agent'), int(time.time())))
   conn.commit()
   conn.close()
 

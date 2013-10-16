@@ -1,2 +1,3 @@
-CREATE table offers_grade(offer_id text, offer_grade integer, created_at integer, 
-  UNIQUE (offer_id, offer_grade) ON CONFLICT REPLACE);
+DROP table offers_grade;
+CREATE table offers_grade(offer_id text, offer_grade integer, request_id text, user_agent text, created_at integer, 
+  UNIQUE (offer_id, offer_grade, request_id, user_agent) ON CONFLICT REPLACE);

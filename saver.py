@@ -4,6 +4,7 @@ from flask import render_template
 from flask import g
 import sqlite3
 import re
+import time
 
 
 app = Flask(__name__)
@@ -31,10 +32,9 @@ def init_database():
     db.commit()
 # >> database 
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-  return render_template('hello.html', name=name)
+@app.route('/main')
+def main():
+  return render_template('main.html')
 
 @app.route('/save', methods=['POST'])
 def save():
@@ -47,10 +47,19 @@ def init_db():
   init_database()
   return "created"
 
+@app.route('/show')
+def show():
+  return render_template('show.html')
+
 def save_request(form):
   conn = sqlite3.connect(DATABASE)
   c = conn.cursor()
   for i in form:
-    offer_id = re.findall(r'\d+', i)[0]
+    match = re.findall(r'offer_id\[(\d+)\]', i)
+    if not match: continue
+    offer_id = match[0]
     grade = form["offer_id[%s]" % offer_id]
-    c.execute("INSERT into offers_grade values (?,?)", (offer_id, grade))
+    c.execute("INSERT into offers_grade values (?,?,?)", (offer_id, grade, int(time.time())))
+
+if __name__ == '__main__':
+    app.run()

@@ -44,9 +44,15 @@ def init_db():
 
 @app.route('/show')
 def show():
+  ids = request.args.get('ids', '')
+  ids_list = get_valid_ids(ids)
+  
   conn = sqlite3.connect(DATABASE)
   c = conn.cursor()
-  rows = c.execute("SELECT * FROM offers_grade")
+  if ids <> '':
+    rows = c.execute("SELECT avg(offer_grade) FROM offers_grade where offer_id in ('%s')" % ids_list)
+  else:
+    rows = c.execute("SELECT * FROM offers_grade")
   return render_template('show.html', rows=rows)
 
 def save_request(form):
@@ -62,6 +68,15 @@ def save_request(form):
       (offer_id, grade, check_id, request.headers.get('User-Agent'), int(time.time())))
   conn.commit()
   conn.close()
+
+def get_valid_ids(ids):
+  ids = ids.split(",")
+  
+  clear_list = []
+  for id in ids:
+    if id.isdigit(): clear_list.append(id)
+  
+  return "','".join(clear_list)
 
 if __name__ == '__main__':
     app.run()

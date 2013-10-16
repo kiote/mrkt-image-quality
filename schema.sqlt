@@ -1,0 +1,2 @@
+CREATE table offers_grade(offer_id text, offer_grade integer, created_at integer, 
+  UNIQUE (offer_id, offer_grade) ON CONFLICT REPLACE);

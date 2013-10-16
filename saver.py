@@ -5,14 +5,15 @@ from flask import g
 import sqlite3
 import re
 import time
+import os
 
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
 # << database
-DATABASE = './database.db'
-SCHEMA = './schema.sql'
+DATABASE = __file__ + 'database.db'
+SCHEMA = __file__ + 'schema.sql'
 
 def get_db():
   db = sqlite3.connect(DATABASE)

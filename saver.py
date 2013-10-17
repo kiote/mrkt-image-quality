@@ -50,7 +50,7 @@ def show():
   conn = sqlite3.connect(DATABASE)
   c = conn.cursor()
   if ids <> '':
-    rows = c.execute("SELECT avg(offer_grade) FROM offers_grade where offer_id in ('%s')" % ids_list)
+    rows = c.execute("SELECT avg(offer_grade) FROM offers_grade where request_id in ('%s')" % ids_list)
   else:
     rows = c.execute("SELECT * FROM offers_grade")
   return render_template('show.html', rows=rows)
@@ -70,11 +70,11 @@ def save_request(form):
   conn.close()
 
 def get_valid_ids(ids):
-  ids = ids.split(",")
+  clear_list = ids.split(",")
   
-  clear_list = []
-  for id in ids:
-    if id.isdigit(): clear_list.append(id)
+  #clear_list = []
+  #for id in ids:
+  #  if id.isdigit(): clear_list.append(id)
   
   return "','".join(clear_list)
 
